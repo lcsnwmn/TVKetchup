@@ -69,5 +69,18 @@ namespace TVKetchup.APIs
                 .WithOAuthBearerToken(jwtToken)
                 .GetJsonAsync<TVDB.EpisodeRecordData>();
         }
+
+        public async Task<TVDB.SeriesImageQueryResults> GetBackgroundImages(int seriesId)
+        {
+            if (jwtToken == null)
+            {
+                Login();
+            }           
+            return await options.BaseURL
+                .AppendPathSegment(string.Format("/series/{0}/images/query", seriesId))
+                .SetQueryParam("keyType", "fanart")
+                .WithOAuthBearerToken(jwtToken)
+                .GetJsonAsync<TVDB.SeriesImageQueryResults>();
+        }
     }
 }

@@ -139,4 +139,25 @@ namespace TVKetchup.Models.TVDB
             invalidQueryParams = new List<string>();
         }
     }
+
+    public class SeriesImageQueryResults {
+        public List<SeriesImageQueryResult> data { get; set; }
+        public JSONErrors errors { get; set; }
+    }
+
+    public class SeriesImageQueryResult {
+        public int? id { get; set; }
+        public string keyType { get; set; }
+        public string subKey { get; set; }
+        public string fileName { get; set; }
+        public int? languageId { get; set; }
+        public string resolution { get; set; }
+        public inline_model ratingsInfo { get; set; }
+        public string thumbnail { get; set; }
+    }
+
+    public class inline_model {
+        public double? average { get; set; }
+        public int? count { get; set; }
+    }
 }

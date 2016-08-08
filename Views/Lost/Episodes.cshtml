@@ -1,8 +1,9 @@
 ﻿@using TVKetchup.Models.TVDB
 @model List<BasicEpisode>
 @{
-    ViewBag.Title = "Lost";
-    var Episodes = Model;
+    ViewBag.Title = "Lost - All Episodes";
+    var Episodes = (List<BasicEpisode>)ViewData["episodeList"];
+    var background = ViewData["background"];
     var currentSeason = 0;
     var currentTreeParent = 1;
     var currentTreeNode = 1;
@@ -26,6 +27,40 @@
     </script>
 }
 
+@section Style
+{
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            position: relative;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+        min-height: 100%;
+        }
+        body::after {
+            content: "";
+            background: url('http://thetvdb.com/banners/@background') no-repeat center center;
+            background-size:cover;
+            opacity: 0.1;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            position: fixed;
+            z-index: -1;  
+            -webkit-filter: grayscale(1); /* Old WebKit */
+            filter: grayscale(1);
+        }
+
+        tr
+        {
+            cursor: pointer;
+        }
+    </style>
+}
+
 <h2>Lost</h2>
 
 <table id="episodes-table" class="table tree">
@@ -42,7 +77,7 @@
         currentTreeNode++;
     }
     var @episodeIdentifier = string.Format("{0}.{1}", @ep.airedSeason, @ep.dvdEpisodeNumber);
-    <tr class="treegrid-@currentTreeNode treegrid-parent-@currentTreeParent">
+    <tr class="treegrid-@currentTreeNode treegrid-parent-@currentTreeParent" onclick="location.href='@(Url.Action("Episode", "Lost", new { id = @ep.id}))'">
         <td>@episodeIdentifier</td><td>@ep.episodeName</td>
     </tr>  
     currentTreeNode++;  

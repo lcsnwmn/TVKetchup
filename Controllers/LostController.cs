@@ -27,19 +27,37 @@ namespace TVKetchup.Controllers
         // GET: Lost
         public ActionResult Episodes()
         {
-            return View("Episodes", episodeList);
+            ViewData["episodeList"] = episodeList;
+            ViewData["background"] = getBackgroundImage(73739);
+            return View("Episodes");
+        }
+
+        public ActionResult Episode(int id)
+        {
+            var detailsTask = api.GetEpisodeDetails(id);
+            detailsTask.Wait();
+            var episode = detailsTask.Result.data;
+            episode.filename = "http://thetvdb.com/banners/".AppendPathSegment(episode.filename);
+            ViewData["episode"] = episode;
+            ViewData["background"] = getBackgroundImage(73739);
+            return View("Episode");
         }
 
         public ActionResult Today()
         {
             var index = (DateTime.Today - new DateTime(2016,8,2)).Days;
             var episodeId = episodeList[index].id;
-            var detailsTask = api.GetEpisodeDetails(episodeId.Value);
-            detailsTask.Wait();
-            var episode = detailsTask.Result.data;
-            episode.filename = "http://thetvdb.com/banners/".AppendPathSegment(episode.filename);
+            
+            return Episode(episodeId.Value);
+        }
 
-            return View("Today", episode);
+        private string getBackgroundImage(int seriesId)
+        {
+            var imageTask = api.GetBackgroundImages(seriesId);
+            imageTask.Wait();
+            var images = imageTask.Result.data;
+            var mostPopularImage = images.OrderBy(i => i.ratingsInfo.average).FirstOrDefault();
+            return mostPopularImage.fileName;
         }
     }
 }
