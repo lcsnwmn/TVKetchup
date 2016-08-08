@@ -1,0 +1,55 @@
+@using TVKetchup.Models.TVDB
+@model Episode
+@{
+    ViewBag.Title = "Lost";
+    var ep = Model;
+    var @epHeader = string.Format("Season {0} Episode {1}", @ep.airedSeason, @ep.dvdEpisodeNumber);
+}
+
+@section Style
+{
+    <style>
+        .pageContainer {
+            margin: 20px;
+        }
+
+
+        .title {
+            font-size: 26px;
+            line-height: 26px;
+        }
+
+        .subtitle {
+            font-size: 18px;
+        }
+
+        .mainImage {
+            padding: 10px 0px; 
+        }
+
+        .mainImage img {
+            width: 100%;
+            height: 100%;
+            max-width: 748px;
+        }
+
+        .overview {
+            max-width: 748px;
+        }
+    </style>
+}
+
+<h2>Today's Episode</h2>
+
+<div class="pageContainer">
+    <div class="title">@ep.episodeName</div>
+    <div class="subtitle">@epHeader</div>
+
+    <div class="mainImage">
+        <img src="@ep.filename"></img>
+    </div>
+
+    <div class="overview">
+        <p>@ep.overview</p>
+    </div>
+</div>

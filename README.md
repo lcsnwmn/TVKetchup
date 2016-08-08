@@ -1,0 +1,1 @@
+This is gonna be a super dope cooperative/competitive tv tracking app. For now it's just a list of LOST episodes. ¯\_(ツ)_/¯

@@ -1,0 +1,50 @@
+﻿@using TVKetchup.Models.TVDB
+@model List<BasicEpisode>
+@{
+    ViewBag.Title = "Lost";
+    var Episodes = Model;
+    var currentSeason = 0;
+    var currentTreeParent = 1;
+    var currentTreeNode = 1;
+}
+
+@section Scripts
+{
+    <script type="text/javascript" src="@Url.Content("~/lib/jquery-treegrid/js/jquery.treegrid.min.js")"></script>
+
+    <script type="text/javascript">
+        $(function () {
+            $('.tree').treegrid({ initialState: "collapsed" });
+
+            $(".tree tr").on("click", function(event){
+                if (!$(event.target).is('.treegrid-expander'))
+                {
+                    $(this).treegrid('toggle');
+                }
+            });
+        });
+    </script>
+}
+
+<h2>Lost</h2>
+
+<table id="episodes-table" class="table tree">
+@foreach (var ep in Episodes)
+{
+    if (ep.airedSeason > currentSeason)
+    {        
+        <tr class="treegrid-@currentTreeNode">
+            <td colspan="2" style="cursor:pointer;"><h3 style="display: inline;">Season @ep.airedSeason</h3></td>
+        </tr>
+        
+        currentSeason = ep.airedSeason.Value;
+        currentTreeParent = currentTreeNode;
+        currentTreeNode++;
+    }
+    var @episodeIdentifier = string.Format("{0}.{1}", @ep.airedSeason, @ep.dvdEpisodeNumber);
+    <tr class="treegrid-@currentTreeNode treegrid-parent-@currentTreeParent">
+        <td>@episodeIdentifier</td><td>@ep.episodeName</td>
+    </tr>  
+    currentTreeNode++;  
+}
+</table>
