@@ -36,7 +36,14 @@ namespace TVKetchup
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
-            services.Configure<Options.TVDB>(options => Configuration.GetSection("TVDB").Bind(options));
+            services.AddOptions();
+            services.Configure<TVKetchup.Options.TVDB>(options => 
+            {
+                options.BaseURL = Configuration["tvdb_apibaseurl"];
+                options.ApiKey = Configuration["tvdb_apikey"];
+                options.Username = Configuration["tvdb_username"];
+                options.UserKey = Configuration["tvdb_userkey"];
+            });
 
             // Add framework services.
             services.AddDbContext<ApplicationDbContext>(options =>
