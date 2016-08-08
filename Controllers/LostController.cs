@@ -56,7 +56,7 @@ namespace TVKetchup.Controllers
             var imageTask = api.GetBackgroundImages(seriesId);
             imageTask.Wait();
             var images = imageTask.Result.data;
-            var mostPopularImage = images.OrderBy(i => i.ratingsInfo.average).FirstOrDefault();
+            var mostPopularImage = images.OrderByDescending(i => i.ratingsInfo.average).FirstOrDefault();
             return mostPopularImage.fileName;
         }
     }
