@@ -46,7 +46,7 @@ namespace TVKetchup.Controllers
         public ActionResult Today()
         {
             var index = (DateTime.Today - new DateTime(2016,8,2)).Days;
-            var episodeId = episodeList[index].id;
+            var episodeId = episodeList[index + 3].id; // jumped forward 3 days
             
             return Episode(episodeId.Value);
         }
